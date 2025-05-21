@@ -1,4 +1,6 @@
+
 import supabase from '../config/supabase.js';
+import { generateToken } from '../utils/JwtToken.js';
 
 export const login = async (req, res) => {
   try {
@@ -52,10 +54,3 @@ export const login = async (req, res) => {
   }
 };
 
-
-// Helper function to generate JWT token
-const generateToken = (userId) => {
-  // TODO: Implement proper JWT token generation
-  // For now, returning a simple string
-  return `token_${userId}_${Date.now()}`;
-}; 

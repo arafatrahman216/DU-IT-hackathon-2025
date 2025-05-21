@@ -21,7 +21,7 @@ export const protect = async (req, res, next) => {
 
     // 3) Check if user still exists in Supabase
     const { data: user, error } = await supabase
-      .from('users')
+      .from('User')
       .select('*')
       .eq('id', decoded.id)
       .single();

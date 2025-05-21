@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Box,
@@ -17,6 +18,7 @@ import {
 } from '@mui/icons-material';
 
 const Login = () => {
+  const navigate = useNavigate();
   
   const [formData, setFormData] = useState({
     email: '',
@@ -55,6 +57,12 @@ const Login = () => {
       // Handle successful login here
       if (data.status === 'success') {
         console.log('Login successful:', data.data);
+        localStorage.setItem('token', data.data.token);
+        localStorage.setItem('user', JSON.stringify(data.data.user));
+        // Redirect to dashboard or home page
+        navigate('/profile');
+
+        
         // TODO: Save token and redirect user
       }
     } catch (error) {

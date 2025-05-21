@@ -6,6 +6,7 @@ import ImageContent from '../../components/LearningContent/ImageContent';
 import FlashcardContent from '../../components/LearningContent/FlashcardContent';
 import VideoContent from '../../components/LearningContent/VideoContent';
 import LinkContent from '../../components/LearningContent/LinkContent';
+import TextContent from '../../components/LearningContent/TextContent';
 
 const LearningPage = () => {
     return (
@@ -37,6 +38,8 @@ const LearningPage = () => {
                                         return <VideoContent content={item.content} title={item.title} />;
                                     case 'link':
                                         return <LinkContent content={item.content} label={item.label} />;
+                                    case 'text':
+                                        return <TextContent content={item.content} />;
                                     default:
                                         return <p>Unsupported content type</p>;
                                 }

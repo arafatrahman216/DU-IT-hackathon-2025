@@ -6,71 +6,73 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+import authRoutes from './src/routes/authRoutes.js';
+
 // Load environment variables
 dotenv.config();
-
-if (!process.env.JWT_SECRET) {
-  throw new Error('JWT_SECRET environment variable is required');
-}
-
-
 
 // Initialize express app
 const app = express();
 
-// Security Middleware
-app.use(helmet()); // Set security headers
-app.use(cors()); // Enable CORS
+
+// Configure CORS
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], // Vite's default port
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
 app.use(compression()); // Compress responses
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
-});
-app.use(limiter);
-
-// Body Parser Middleware
+// Body parser configuration
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Add request logging for debugging
+app.use((req, res, next) => {
+  console.log('Request Body:', req.body);
+  console.log('Content-Type:', req.headers['content-type']);
+  next();
+});
 
 // Logging Middleware
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+// Routes
+app.use('/api/auth', authRoutes);
+
 // Health Check Route
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'success', message: 'Server is running' });
 });
 
-// Routes will be imported and used here
-// app.use('/api/v1/users', userRoutes);
-// app.use('/api/v1/auth', authRoutes);
-
 // Error handling middleware
-app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  res.status(statusCode).json({
-    status: 'error',
-    statusCode,
-    message: err.message,
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-  });
-});
+// app.use((err, req, res, next) => {
+//   console.error(err.stack);
+//   res.status(500).json({
+//     status: 'error',
+//     message: err.message || 'Something went wrong!'
+//   });
+// });
 
 // 404 handler
-app.use((req, res) => {
-  res.status(404).json({
-    status: 'error',
-    message: 'Route not found'
-  });
-});
+// app.use((req, res) => {
+//   res.status(404).json({
+//     status: 'error',
+//     message: 'Route not found'
+//   });
+// });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+  console.log(`Visit http://localhost:${PORT}/api/health to check server status`);
 });
 
 

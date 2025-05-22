@@ -8,6 +8,8 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import authRoutes from './src/routes/authRoutes.js';
+import learningRoutes from './src/routes/learningRoutes.js';
+import infoRoutes from './src/routes/infoRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -18,9 +20,7 @@ const app = express();
 
 // Configure CORS
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], // Vite's default port
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: true,
   credentials: true
 }));
 
@@ -46,6 +46,8 @@ if (process.env.NODE_ENV === 'development') {
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/learn', learningRoutes);
+app.use('/api/info', infoRoutes);
 
 // Health Check Route
 app.get('/api/health', (req, res) => {

@@ -66,6 +66,11 @@ export const learningContentData = [
         " The boundary surrounding a black hole is called the event horizon, beyond which no information or matter can escape."
     },
     {
+        "type": "qna",
+        "question": "What is a black hole?",
+        "answer": "A black hole is a region of spacetime where gravity is so strong that nothing, not even light, can escape from it."
+    },
+    {
         "type": "link",
         "content": "https://nasa.gov/blackholes", // Cleaned URL
         "label": "Learn more from NASA"

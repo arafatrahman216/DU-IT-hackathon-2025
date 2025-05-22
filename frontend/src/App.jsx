@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/auth/Login';
 import Profile from './pages/profile/Profile'; // Make sure this file exists
 import LearningPage from './pages/LearningPage/LearningPage';
+import MisInfo from './pages/misInfo/MisInfo';
 
 // Create a custom theme
 const theme = createTheme({
@@ -58,6 +59,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/learning" element={<LearningPage />} /> {/* Add this line for the learning page */}
+          <Route path="/misinfo" element={<MisInfo />} /> {/* Add this line for the misinformation page */}
         </Routes>
       </Router>
     </ThemeProvider>

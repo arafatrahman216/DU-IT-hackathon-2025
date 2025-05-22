@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -24,6 +25,7 @@ import {
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch user data when component mounts
@@ -62,6 +64,12 @@ const Profile = () => {
   if (loading) {
     return <ProfileSkeleton />;
   }
+  if (localStorage.getItem('token') === null) {
+    
+    navigate('/login');
+  }
+  const token = localStorage.getItem('token');
+  console.log(user);
 
   return (
     <Box
@@ -152,43 +160,43 @@ const Profile = () => {
             </Box>
           </Box>
 
+          {/* Navigation Buttons */}
+          <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
+            <Button
+              variant="outlined"
+              color="primary"
+              href="/misinfo"
+              sx={{
+                color: 'white',
+                borderColor: 'rgba(255,255,255,0.3)',
+                '&:hover': {
+                  borderColor: 'white',
+                  backgroundColor: 'rgba(255,255,255,0.08)',
+                },
+              }}
+            >
+              Misinformation Page
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              href="/learning"
+              sx={{
+                color: 'white',
+                borderColor: 'rgba(255,255,255,0.3)',
+                '&:hover': {
+                  borderColor: 'white',
+                  backgroundColor: 'rgba(255,255,255,0.08)',
+                },
+              }}
+            >
+              Learning Page
+            </Button>
+          </Box>
+
           {/* Main Content */}
           <Grid container spacing={3}>
-                  <Grid item xs={12} md={4}>
-                    <Paper
-                    sx={{
-                      p: 3,
-                      backgroundColor: 'rgba(255,255,255,0.03)',
-                      borderRadius: 2,
-                      border: '1px solid rgba(255,255,255,0.05)',
-                    }}
-                    >
-                    <Typography variant="h6" sx={{ color: 'white', mb: 2 }}>
-                      Personal Information
-                    </Typography>
-                    <Box sx={{ '& > div': { mb: 2 } }}>
-                      <InfoItem
-                      icon={<EmailIcon />}
-                      label="Email"
-                      value={user?.email || 'email@example.com'}
-                      />
-                      <InfoItem
-                      icon={<LocationIcon />}
-                      label="Location"
-                      value={user?.location || 'Not specified'}
-                      />
-                      <InfoItem
-                      icon={<DateIcon />}
-                      label="Joined"
-                      value={
-                        user?.created_at
-                        ? new Date(user.created_at).toDateString()
-                        : 'Not specified'
-                      }
-                      />
-                    </Box>
-                    </Paper>
-                  </Grid>
+                  <Grid item xs={12} md={4}></Grid>
 
                   {/* Right Column - Education & Skills */}
             <Grid item xs={12} md={8}>
